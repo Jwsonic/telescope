@@ -15,14 +15,14 @@ defmodule Telescope.Games.Game do
             winner: :radiant,
             seq_num: 0
 
+  alias Telescope.Games.Player
+
   @type side :: :radiant | :dire
 
-  @type player :: map()
-
   @type t() :: %__MODULE__{
-          dire_players: list(player()),
+          dire_players: list(Player.t()),
           match_id: non_neg_integer(),
-          radiant_players: list(player()),
+          radiant_players: list(Player.t()),
           seq_num: non_neg_integer(),
           start_time: DateTime.t(),
           winner: side()

@@ -25,6 +25,30 @@ defmodule Telescope.Games.GameTest do
     test "it fails without a match_id" do
       assert Game.parse(%{}) == {:error, "Missing match id."}
     end
+
+    test "it fails without players" do
+      assert Game.parse(%{"match_id" => 0}) == {:error, "players missing from 0."}
+    end
+
+    test "it fails without match_seq_num" do
+      assert Game.parse(%{"match_id" => 0, "players" => []}) ==
+               {:error, "match_seq_num missing from 0."}
+    end
+
+    test "it fails without start_time" do
+      assert Game.parse(%{"match_id" => 0, "players" => [], "match_seq_num" => 0}) ==
+               {:error, "start_time missing from 0."}
+    end
+
+    test "it fails without radiant_win" do
+      assert Game.parse(%{
+               "match_id" => 0,
+               "players" => [],
+               "match_seq_num" => 0,
+               "start_time" => 0
+             }) ==
+               {:error, "radiant_win missing from 0."}
+    end
   end
 
   defp game1 do
