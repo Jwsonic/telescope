@@ -13,8 +13,8 @@ defmodule Telescope.Application do
 
     children = [
       Telescope.Heroes,
-      Telescope.ProPlayers,
-      MatchWatchWorker
+      Telescope.ProPlayers
+      # MatchWatchWorker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
