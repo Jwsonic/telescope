@@ -12,6 +12,7 @@ defmodule Telescope.Application do
     :ssl.start()
 
     children = [
+      Telescope.Repo,
       Telescope.Heroes,
       Telescope.ProPlayers
       # MatchWatchWorker
