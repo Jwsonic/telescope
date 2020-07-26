@@ -8,52 +8,52 @@ defmodule Telescope.Games.Player do
 end
 
 defmodule Telescope.Games.Game do
-  defstruct dire_players: [],
-            match_id: 0,
-            radiant_players: [],
-            start_time: DateTime.utc_now(),
-            winner: :radiant,
-            seq_num: 0
+  use Ecto.Schema
 
-  alias Telescope.Games.Player
+  import Ecto.Changeset
 
-  @type side :: :radiant | :dire
+  alias __MODULE__
 
-  @type t() :: %__MODULE__{
-          dire_players: list(Player.t()),
+  @type t() :: %Game{
+          duration: non_neg_integer(),
           match_id: non_neg_integer(),
-          radiant_players: list(Player.t()),
-          seq_num: non_neg_integer(),
-          start_time: DateTime.t(),
-          winner: side()
+          match_seq_num: non_neg_integer(),
+          radiant_win: boolean(),
+          start_time: DateTime.t()
         }
+
+  schema "games" do
+    field(:duration, :integer)
+    field(:match_id, :integer)
+    field(:match_seq_num, :integer)
+    field(:radiant_win, :boolean)
+    field(:start_time, :utc_datetime)
+
+    timestamps()
+  end
+
+  @params [:duration, :match_id, :match_seq_num, :radiant_win, :start_time]
 
   @doc """
   Attempts to parse a `Game` from a given map.
   """
-  @spec parse(data :: map()) :: {:ok, Game.t()} | {:error, String.t()}
-  def parse(%{"match_id" => match_id} = data) do
-    with {:ok, _players} <- extract(data, "players"),
-         {:ok, seq_num} <- extract(data, "match_seq_num"),
-         {:ok, start_time} <- extract(data, "start_time"),
-         {:ok, start_time} <- DateTime.from_unix(start_time),
-         {:ok, radiant_win} <- extract(data, "radiant_win") do
-      {:ok,
-       %__MODULE__{
-         match_id: match_id,
-         seq_num: seq_num,
-         start_time: start_time,
-         winner: (radiant_win && :radiant) || :dire
-       }}
-    end
+  @spec parse(data :: map()) :: Ecto.Changeset.t()
+  def parse(data) do
+    data
+    |> convert_start_time()
+    |> (&cast(%Game{}, &1, @params)).()
+    |> validate_required(@params)
+    |> validate_number(:duration, greater_than: 0)
+    |> validate_number(:match_id, greater_than: 0)
+    |> validate_number(:match_seq_num, greater_than: 0)
   end
 
-  def parse(_data), do: {:error, "Missing match id."}
-
-  defp extract(%{"match_id" => match_id} = data, key) do
-    case Map.get(data, key) do
-      nil -> {:error, "#{key} missing from #{match_id}."}
-      value -> {:ok, value}
-    end
+  defp convert_start_time(%{"start_time" => start_time} = data)
+       when is_integer(start_time) and start_time > 0 do
+    start_time
+    |> DateTime.from_unix!()
+    |> (&Map.put(data, "start_time", &1)).()
   end
+
+  defp convert_start_time(data), do: data
 end
