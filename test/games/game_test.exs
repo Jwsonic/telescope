@@ -7,35 +7,35 @@ defmodule Telescope.Games.GameTest do
     test "it correctly parses real match data" do
       assert game1()
              |> Jason.decode!()
-             |> Game.parse()
-             |> (&Ecto.Changeset.apply_action!(&1, :insert)).() ==
-               %Game{
-                 duration: 606,
-                 match_id: 5_469_067_607,
-                 match_seq_num: 4_583_985_737,
-                 radiant_win: true,
-                 start_time: ~U[2020-06-13 16:29:18Z]
-               }
+             |> Game.parse() ==
+               {:ok,
+                %Game{
+                  duration: 606,
+                  match_id: 5_469_067_607,
+                  match_seq_num: 4_583_985_737,
+                  radiant_win: true,
+                  start_time: ~U[2020-06-13 16:29:18Z]
+                }}
 
       assert game2()
              |> Jason.decode!()
-             |> Game.parse()
-             |> (&Ecto.Changeset.apply_action!(&1, :insert)).() ==
-               %Game{
-                 duration: 1829,
-                 match_id: 5_469_051_040,
-                 match_seq_num: 4_583_985_738,
-                 radiant_win: true,
-                 start_time: ~U[2020-06-13 16:18:40Z]
-               }
+             |> Game.parse() ==
+               {:ok,
+                %Game{
+                  duration: 1829,
+                  match_id: 5_469_051_040,
+                  match_seq_num: 4_583_985_738,
+                  radiant_win: true,
+                  start_time: ~U[2020-06-13 16:18:40Z]
+                }}
     end
 
     test "it fails without a valid data" do
-      assert %Ecto.Changeset{valid?: false} = Game.parse(%{"match_id" => 0})
+      assert {:error, %Ecto.Changeset{valid?: false}} = Game.parse(%{"match_id" => 0})
     end
 
     test "it fails without players" do
-      assert %Ecto.Changeset{valid?: false} = Game.parse(%{"match_id" => 0})
+      assert {:error, %Ecto.Changeset{valid?: false}} = Game.parse(%{"match_id" => 0})
     end
   end
 

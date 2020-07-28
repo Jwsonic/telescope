@@ -1,40 +1,32 @@
 defmodule Telescope.Games.Datastore do
-  @table 'games'
-
-  @game_key :game
-  @seq_num_key :seq_num
+  @moduledoc """
+  Datastore is responsible for presisting data in the Games domain.
+  """
 
   alias Telescope.Games.Game
+  alias Telescope.Repo
 
-  @spec init() :: :ok
-  def init do
-    :dets.open_file(@table, type: :ordered_set)
+  import Ecto.Query
 
-    :ok
+  @doc """
+  Persists a `Game`.
+  """
+  @spec write_game(game :: Game.t()) :: {:ok, Game.t()} | {:error, Ecto.Changeset.t()}
+  def write_game(%Game{} = game) do
+    Repo.insert(game)
   end
 
-  @spec write_game(game :: Game.t()) :: :ok
-  def write_game(%Game{seq_num: seq_num} = game) do
-    :dets.insert(@table, {{@game_key, seq_num}, game})
-
-    if seq_num > current_seq_num(), do: write_current_seq_num(seq_num)
-
-    :ok
-  end
-
-  @spec current_seq_num() :: non_neg_integer()
-  def current_seq_num do
-    case :dets.match_object(@table, {@seq_num_key, :"$1"}) do
-      [{@seq_num_key, seq_num}] -> seq_num
-      _ -> 4_595_976_092
-    end
-  end
-
-  @spec write_current_seq_num(seq_num :: non_neg_integer()) :: :ok
-  defp write_current_seq_num(seq_num) do
-    :dets.match_delete(@table, {@seq_num_key, :_})
-    :dets.insert(@table, {@seq_num_key, seq_num})
-
-    :ok
+  @doc """
+  Returns the current match_seq_num.
+  """
+  @spec current_match_seq_num() :: non_neg_integer()
+  def current_match_seq_num do
+    Game
+    |> select([:match_seq_num])
+    |> order_by(desc: :match_seq_num)
+    |> limit(1)
+    |> Repo.one()
+    |> Kernel.||(%{})
+    |> Map.get(:match_seq_num, 4_595_976_092)
   end
 end

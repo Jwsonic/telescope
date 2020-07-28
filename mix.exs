@@ -7,7 +7,9 @@ defmodule Telescope.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -26,7 +28,23 @@ defmodule Telescope.MixProject do
       {:tzdata, "~> 1.0.3"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
+      {:finch, "~> 0.3"},
+
+      # Test/Dev deps
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_machina, "~> 2.4", only: :test}
+    ]
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_env), do: ["lib"]
+
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create --quiet", "ecto.migrate"],
+      test: ["ecto.setup", "test"],
+      "test.watch": ["ecto.setup", "test.watch"]
     ]
   end
 end

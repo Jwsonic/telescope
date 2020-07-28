@@ -29,7 +29,7 @@ defmodule Telescope.Games.Game do
     field(:radiant_win, :boolean)
     field(:start_time, :utc_datetime)
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @params [:duration, :match_id, :match_seq_num, :radiant_win, :start_time]
@@ -37,7 +37,7 @@ defmodule Telescope.Games.Game do
   @doc """
   Attempts to parse a `Game` from a given map.
   """
-  @spec parse(data :: map()) :: Ecto.Changeset.t()
+  @spec parse(data :: map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def parse(data) do
     data
     |> convert_start_time()
@@ -45,7 +45,10 @@ defmodule Telescope.Games.Game do
     |> validate_required(@params)
     |> validate_number(:duration, greater_than: 0)
     |> validate_number(:match_id, greater_than: 0)
+    |> unique_constraint(:match_id)
     |> validate_number(:match_seq_num, greater_than: 0)
+    |> unique_constraint(:match_seq_num)
+    |> apply_action(:insert)
   end
 
   defp convert_start_time(%{"start_time" => start_time} = data)
