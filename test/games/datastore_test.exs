@@ -8,7 +8,16 @@ defmodule Telescope.Games.DatastoreTest do
 
   describe "Datastore.write_game/1" do
     test "it persists a valid game" do
-      {:ok, game} = :game |> build |> Datastore.write_game()
+      {:ok, game} =
+        %{
+          "duration" => 600,
+          "match_id" => 1,
+          "match_seq_num" => 1,
+          "radiant_win" => true,
+          "start_time" => DateTime.utc_now() |> DateTime.to_iso8601()
+        }
+        |> Game.parse()
+        |> Datastore.write_game()
 
       assert game == Repo.one!(Game)
     end

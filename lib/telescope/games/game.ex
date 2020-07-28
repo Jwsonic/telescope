@@ -13,6 +13,7 @@ defmodule Telescope.Games.Game do
   import Ecto.Changeset
 
   alias __MODULE__
+  alias Ecto.Changeset
 
   @type t() :: %Game{
           duration: non_neg_integer(),
@@ -37,8 +38,8 @@ defmodule Telescope.Games.Game do
   @doc """
   Attempts to parse a `Game` from a given map.
   """
-  @spec parse(data :: map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
-  def parse(data) do
+  @spec parse(data :: map()) :: Changeset.t()
+  def parse(data) when is_map(data) do
     data
     |> convert_start_time()
     |> (&cast(%Game{}, &1, @params)).()
@@ -48,7 +49,6 @@ defmodule Telescope.Games.Game do
     |> unique_constraint(:match_id)
     |> validate_number(:match_seq_num, greater_than: 0)
     |> unique_constraint(:match_seq_num)
-    |> apply_action(:insert)
   end
 
   defp convert_start_time(%{"start_time" => start_time} = data)

@@ -1,41 +1,34 @@
 defmodule Telescope.Games.GameTest do
   use ExUnit.Case
 
+  alias Ecto.Changeset
   alias Telescope.Games.Game
 
   describe "Game.parse/1" do
     test "it correctly parses real match data" do
-      assert game1()
-             |> Jason.decode!()
-             |> Game.parse() ==
-               {:ok,
-                %Game{
-                  duration: 606,
-                  match_id: 5_469_067_607,
-                  match_seq_num: 4_583_985_737,
-                  radiant_win: true,
-                  start_time: ~U[2020-06-13 16:29:18Z]
-                }}
+      assert %Changeset{
+               data: %Game{},
+               valid?: true
+             } =
+               game1()
+               |> Jason.decode!()
+               |> Game.parse()
 
-      assert game2()
-             |> Jason.decode!()
-             |> Game.parse() ==
-               {:ok,
-                %Game{
-                  duration: 1829,
-                  match_id: 5_469_051_040,
-                  match_seq_num: 4_583_985_738,
-                  radiant_win: true,
-                  start_time: ~U[2020-06-13 16:18:40Z]
-                }}
+      assert %Changeset{
+               data: %Game{},
+               valid?: true
+             } =
+               game2()
+               |> Jason.decode!()
+               |> Game.parse()
     end
 
     test "it fails without a valid data" do
-      assert {:error, %Ecto.Changeset{valid?: false}} = Game.parse(%{"match_id" => 0})
+      assert  %Ecto.Changeset{data: %Game{}, valid?: false} = Game.parse(%{"match_id" => 0})
     end
 
     test "it fails without players" do
-      assert {:error, %Ecto.Changeset{valid?: false}} = Game.parse(%{"match_id" => 0})
+      assert %Ecto.Changeset{data: %Game{}, valid?: false} = Game.parse(%{"match_id" => 0})
     end
   end
 

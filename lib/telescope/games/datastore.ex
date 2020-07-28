@@ -3,6 +3,7 @@ defmodule Telescope.Games.Datastore do
   Datastore is responsible for presisting data in the Games domain.
   """
 
+  alias Ecto.Changeset
   alias Telescope.Games.Game
   alias Telescope.Repo
 
@@ -11,9 +12,9 @@ defmodule Telescope.Games.Datastore do
   @doc """
   Persists a `Game`.
   """
-  @spec write_game(game :: Game.t()) :: {:ok, Game.t()} | {:error, Ecto.Changeset.t()}
-  def write_game(%Game{} = game) do
-    Repo.insert(game)
+  @spec write_game(changeset :: Changeset.t()) :: {:ok, Game.t()} | {:error, Ecto.Changeset.t()}
+  def write_game(%Changeset{data: %Game{}} = changeset) do
+    Repo.insert(changeset)
   end
 
   @doc """
