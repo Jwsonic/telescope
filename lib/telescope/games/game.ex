@@ -16,11 +16,14 @@ defmodule Telescope.Games.Game do
   alias Ecto.Changeset
 
   @type t() :: %Game{
+          id: non_neg_integer(),
           duration: non_neg_integer(),
           match_id: non_neg_integer(),
           match_seq_num: non_neg_integer(),
           radiant_win: boolean(),
-          start_time: DateTime.t()
+          start_time: DateTime.t(),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "games" do
@@ -49,6 +52,10 @@ defmodule Telescope.Games.Game do
     |> unique_constraint(:match_id)
     |> validate_number(:match_seq_num, greater_than: 0)
     |> unique_constraint(:match_seq_num)
+  end
+
+  def parse(_data) do
+    %Changeset{valid?: false}
   end
 
   defp convert_start_time(%{"start_time" => start_time} = data)

@@ -1,7 +1,7 @@
 defmodule Telescope.Factory do
   use ExMachina.Ecto, repo: Telescope.Repo
 
-  alias Telescope.Games.Game
+  alias Telescope.Games.{Game, SeqNum}
 
   def game_factory do
     %Game{
@@ -10,6 +10,12 @@ defmodule Telescope.Factory do
       match_seq_num: sequence(:match_seq_num, & &1),
       radiant_win: false,
       start_time: DateTime.utc_now() |> DateTime.truncate(:second)
+    }
+  end
+
+  def seq_num_factory do
+    %SeqNum{
+      match_seq_num: sequence(:match_id, & &1)
     }
   end
 end
