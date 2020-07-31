@@ -29,11 +29,13 @@ defmodule Telescope.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:finch, "~> 0.3"},
+      {:type_check, "~> 0.1.0"},
 
       # Test/Dev deps
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_machina, "~> 2.4", only: :test}
+      {:ex_machina, "~> 2.4", only: :test},
+      {:stream_data, "~> 0.1", only: :test}
     ]
   end
 

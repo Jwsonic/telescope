@@ -1,38 +1,38 @@
-defmodule Telescope.Games.GameTest do
+defmodule Telescope.Matches.MatchTest do
   use ExUnit.Case
 
   alias Ecto.Changeset
-  alias Telescope.Games.Game
+  alias Telescope.Matches.Match
 
-  describe "Game.parse/1" do
+  describe "Match.parse/1" do
     test "it correctly parses real match data" do
       assert %Changeset{
-               data: %Game{},
+               data: %Match{},
                valid?: true
              } =
-               game1()
+               match1()
                |> Jason.decode!()
-               |> Game.parse()
+               |> Match.parse()
 
       assert %Changeset{
-               data: %Game{},
+               data: %Match{},
                valid?: true
              } =
-               game2()
+               match2()
                |> Jason.decode!()
-               |> Game.parse()
+               |> Match.parse()
     end
 
     test "it fails without a valid data" do
-      assert  %Ecto.Changeset{data: %Game{}, valid?: false} = Game.parse(%{"match_id" => 0})
+      assert %Ecto.Changeset{data: %Match{}, valid?: false} = Match.parse(%{"match_id" => 0})
     end
 
     test "it fails without players" do
-      assert %Ecto.Changeset{data: %Game{}, valid?: false} = Game.parse(%{"match_id" => 0})
+      assert %Ecto.Changeset{data: %Match{}, valid?: false} = Match.parse(%{"match_id" => 0})
     end
   end
 
-  defp game1 do
+  defp match1 do
     ~s(
   {
     "players": [
@@ -684,7 +684,7 @@ defmodule Telescope.Games.GameTest do
     ],
     "radiant_win": true,
     "duration": 606,
-    "pre_game_duration": 90,
+    "pre_match_duration": 90,
     "start_time": 1592065758,
     "match_id": 5469067607,
     "match_seq_num": 4583985737,
@@ -699,7 +699,7 @@ defmodule Telescope.Games.GameTest do
     "leagueid": 12101,
     "positive_votes": 0,
     "negative_votes": 0,
-    "game_mode": 2,
+    "match_mode": 2,
     "flags": 1,
     "engine": 1,
     "radiant_score": 16,
@@ -852,7 +852,7 @@ defmodule Telescope.Games.GameTest do
   )
   end
 
-  defp game2 do
+  defp match2 do
     ~s({
       "players": [
         {
@@ -1998,7 +1998,7 @@ defmodule Telescope.Games.GameTest do
       ],
       "radiant_win": true,
       "duration": 1829,
-      "pre_game_duration": 90,
+      "pre_match_duration": 90,
       "start_time": 1592065120,
       "match_id": 5469051040,
       "match_seq_num": 4583985738,
@@ -2013,7 +2013,7 @@ defmodule Telescope.Games.GameTest do
       "leagueid": 0,
       "positive_votes": 0,
       "negative_votes": 0,
-      "game_mode": 3,
+      "match_mode": 3,
       "flags": 1,
       "engine": 1,
       "radiant_score": 40,

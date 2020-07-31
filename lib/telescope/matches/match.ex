@@ -1,4 +1,4 @@
-defmodule Telescope.Games.Player do
+defmodule Telescope.Matches.Player do
   defstruct hero: "", name: ""
 
   @type t() :: %__MODULE__{
@@ -7,7 +7,7 @@ defmodule Telescope.Games.Player do
         }
 end
 
-defmodule Telescope.Games.Game do
+defmodule Telescope.Matches.Match do
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -15,7 +15,7 @@ defmodule Telescope.Games.Game do
   alias __MODULE__
   alias Ecto.Changeset
 
-  @type t() :: %Game{
+  @type t() :: %Match{
           id: non_neg_integer(),
           duration: non_neg_integer(),
           match_id: non_neg_integer(),
@@ -26,7 +26,7 @@ defmodule Telescope.Games.Game do
           updated_at: DateTime.t()
         }
 
-  schema "games" do
+  schema "matches" do
     field(:duration, :integer)
     field(:match_id, :integer)
     field(:match_seq_num, :integer)
@@ -39,13 +39,13 @@ defmodule Telescope.Games.Game do
   @params [:duration, :match_id, :match_seq_num, :radiant_win, :start_time]
 
   @doc """
-  Attempts to parse a `Game` from a given map.
+  Attempts to parse a `Match` from a given map.
   """
   @spec parse(data :: map()) :: Changeset.t()
   def parse(data) when is_map(data) do
     data
     |> convert_start_time()
-    |> (&cast(%Game{}, &1, @params)).()
+    |> (&cast(%Match{}, &1, @params)).()
     |> validate_required(@params)
     |> validate_number(:duration, greater_than: 0)
     |> validate_number(:match_id, greater_than: 0)

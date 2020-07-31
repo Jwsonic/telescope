@@ -1,14 +1,14 @@
-defmodule Telescope.Games.DatastoreTest do
+defmodule Telescope.Matches.DatastoreTest do
   use Telescope.DataCase
 
-  alias Telescope.Games.{Datastore, Game}
+  alias Telescope.Matches.{Datastore, Match}
   alias Telescope.Repo
 
   import Telescope.Factory
 
-  describe "Datastore.write_game/1" do
-    test "it persists a valid game" do
-      {:ok, game} =
+  describe "Datastore.write_match/1" do
+    test "it persists a valid match" do
+      {:ok, match} =
         %{
           "duration" => 600,
           "match_id" => 1,
@@ -16,10 +16,10 @@ defmodule Telescope.Games.DatastoreTest do
           "radiant_win" => true,
           "start_time" => DateTime.utc_now() |> DateTime.to_iso8601()
         }
-        |> Game.parse()
-        |> Datastore.write_game()
+        |> Match.parse()
+        |> Datastore.write_match()
 
-      assert game == Repo.one!(Game)
+      assert match == Repo.one!(Match)
     end
   end
 

@@ -1,8 +1,8 @@
-defmodule Telescope.Repo.Migrations.AddGame do
+defmodule Telescope.Repo.Migrations.AddMatch do
   use Ecto.Migration
 
   def up do
-    create table("games") do
+    create table("matches") do
       add(:duration, :integer, null: false)
       add(:match_id, :integer, null: false)
       add(:match_seq_num, :integer, null: false)
@@ -12,14 +12,14 @@ defmodule Telescope.Repo.Migrations.AddGame do
       timestamps()
     end
 
-    create(index("games", [:match_id], unique: true, comment: "Unique index for match id"))
+    create(index("matches", [:match_id], unique: true, comment: "Unique index for match id"))
 
     create(
-      index("games", [:match_seq_num], unique: true, comment: "Unique index for match seq num")
+      index("matches", [:match_seq_num], unique: true, comment: "Unique index for match seq num")
     )
   end
 
   def down do
-    drop_if_exists(table("games"))
+    drop_if_exists(table("matches"))
   end
 end

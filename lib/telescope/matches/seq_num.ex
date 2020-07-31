@@ -1,4 +1,4 @@
-defmodule Telescope.Games.SeqNum do
+defmodule Telescope.Matches.SeqNum do
   @moduledoc """
   Represents the current match sequence number. Intended to only ever be a single row table.
   """

@@ -1,19 +1,19 @@
-defmodule Telescope.Games.Datastore do
+defmodule Telescope.Matches.Datastore do
   @moduledoc """
-  Datastore is responsible for presisting data in the Games domain.
+  Datastore is responsible for presisting data in the Matches domain.
   """
 
   alias Ecto.Changeset
-  alias Telescope.Games.{Game, SeqNum}
+  alias Telescope.Matches.{Match, SeqNum}
   alias Telescope.Repo
 
   import Ecto.Query
 
   @doc """
-  Persists a `Game`.
+  Persists a `Match`.
   """
-  @spec write_game(changeset :: Changeset.t()) :: {:ok, Game.t()} | {:error, Ecto.Changeset.t()}
-  def write_game(%Changeset{data: %Game{}} = changeset) do
+  @spec write_match(changeset :: Changeset.t()) :: {:ok, Match.t()} | {:error, Ecto.Changeset.t()}
+  def write_match(%Changeset{data: %Match{}} = changeset) do
     Repo.insert(changeset)
   end
 

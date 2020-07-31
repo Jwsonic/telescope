@@ -5,17 +5,15 @@ defmodule Telescope.Application do
 
   use Application
 
-  alias Telescope.MatchWatcher.Worker, as: MatchWatchWorker
-
   def start(_type, _args) do
     :inets.start()
     :ssl.start()
 
     children = [
+      {Finch, name: FinchHttp},
       Telescope.Repo,
       Telescope.Heroes,
       Telescope.ProPlayers
-      # MatchWatchWorker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
