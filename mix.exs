@@ -29,13 +29,17 @@ defmodule Telescope.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:finch, "~> 0.3"},
-      {:type_check, "~> 0.1.0"},
+      {:type_check, "~> 0.2.1"},
 
       # Test/Dev deps
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.4", only: :test},
-      {:stream_data, "~> 0.1", only: :test}
+      {:stream_data, "~> 0.1", only: :test},
+      # {:bypass, "~> 1.0", only: :test},
+      {:bypass,
+       git: "git@github.com:PSPDFKit-labs/bypass.git",
+       ref: "8e4b4d82c593ec43da6ef6f74a046b19b249c6a5"}
     ]
   end
 
