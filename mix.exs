@@ -25,21 +25,19 @@ defmodule Telescope.MixProject do
   defp deps do
     [
       {:jason, "~> 1.2"},
-      {:tzdata, "~> 1.0.3"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:finch, "~> 0.3"},
-      {:type_check, "~> 0.2.1"},
+      {:skogsra, "~> 2.2"},
 
       # Test/Dev deps
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.4", only: :test},
-      {:stream_data, "~> 0.1", only: :test},
-      # {:bypass, "~> 1.0", only: :test},
       {:bypass,
        git: "git@github.com:PSPDFKit-labs/bypass.git",
-       ref: "8e4b4d82c593ec43da6ef6f74a046b19b249c6a5"}
+       ref: "8e4b4d82c593ec43da6ef6f74a046b19b249c6a5",
+       only: :test}
     ]
   end
 
@@ -48,7 +46,7 @@ defmodule Telescope.MixProject do
 
   defp aliases do
     [
-      "ecto.setup": ["ecto.create --quiet", "ecto.migrate"],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
       test: ["ecto.setup", "test"],
       "test.watch": ["ecto.setup", "test.watch"]
     ]

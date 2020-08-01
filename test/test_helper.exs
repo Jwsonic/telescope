@@ -1,3 +1,5 @@
+Telescope.Config.preload_all()
+
 ExUnit.start()
 
 ExUnit.configure(exclude: [external: true])

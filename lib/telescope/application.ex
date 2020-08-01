@@ -6,6 +6,8 @@ defmodule Telescope.Application do
   use Application
 
   def start(_type, _args) do
+    Telescope.Config.preload_all()
+
     :inets.start()
     :ssl.start()
 
