@@ -1,6 +1,6 @@
-defmodule Telescope.Valve do
+defmodule Telescope.Valve.ApiClient do
   @moduledoc """
-  Valve is a module abstracting away api requests to valve APIs.
+  ApiClient is a module abstracting away api requests to valve APIs.
   """
 
   alias Telescope.Config

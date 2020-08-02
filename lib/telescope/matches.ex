@@ -17,6 +17,8 @@ defmodule Telescope.Matches do
     process_match_seq_num(matches)
 
     process_matches(matches)
+
+    :ok
   end
 
   defp process_matches(matches) do
