@@ -34,8 +34,7 @@ defmodule Telescope.Matches do
     matches
     |> Enum.filter(&is_map/1)
     |> Enum.map(&match_seq_num/1)
-    |> Enum.reduce(&max/2)
-    |> Kernel.||(0)
+    |> Enum.reduce(0, &max/2)
     |> Datastore.write_match_seq_num()
   end
 

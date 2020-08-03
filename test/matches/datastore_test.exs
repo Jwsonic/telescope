@@ -1,7 +1,7 @@
 defmodule Telescope.Matches.DatastoreTest do
   use Telescope.DataCase
 
-  alias Telescope.Matches.{Datastore, Match}
+  alias Telescope.Matches.{Datastore, Match, SeqNum}
   alias Telescope.Repo
 
   import Telescope.Factory
@@ -32,6 +32,23 @@ defmodule Telescope.Matches.DatastoreTest do
 
     test "it has a default" do
       refute Datastore.get_match_seq_num() |> is_nil()
+    end
+  end
+
+  describe "Datastore.write_match_seq_num/1" do
+    test "it writes the larger match seq num" do
+      assert Repo.all(SeqNum) == []
+
+      Datastore.write_match_seq_num(5_000_000_000)
+
+      assert Datastore.get_match_seq_num() == 5_000_000_000
+    end
+
+    test "it updates the match seq num if there is one already" do
+      Datastore.write_match_seq_num(5_000_000_000)
+      Datastore.write_match_seq_num(5_000_000_001)
+
+      assert Datastore.get_match_seq_num() == 5_000_000_001
     end
   end
 end

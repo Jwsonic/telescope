@@ -9,8 +9,6 @@ defmodule Telescope.Matches.SeqNum do
 
   alias __MODULE__
 
-  @id 1
-
   @type t() :: %SeqNum{
           id: non_neg_integer(),
           match_seq_num: non_neg_integer(),
@@ -24,9 +22,12 @@ defmodule Telescope.Matches.SeqNum do
     timestamps(type: :utc_datetime)
   end
 
-  def changeset(match_seq_num) do
-    %__MODULE__{id: @id}
-    |> cast(%{match_seq_num: match_seq_num}, [:match_seq_num])
+  @spec changeset(seq_num :: SeqNum.t() | nil, changes :: map()) :: Ecto.Changeset.t()
+  def changeset(seq_num, changes) when is_map(changes) do
+    seq_num
+    |> Kernel.||(%SeqNum{})
+    |> cast(changes, [:match_seq_num])
     |> validate_number(:match_seq_num, greater_than: 0)
+    |> unique_constraint(:match_seq_num)
   end
 end

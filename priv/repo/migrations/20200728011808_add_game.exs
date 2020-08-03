@@ -4,8 +4,8 @@ defmodule Telescope.Repo.Migrations.AddMatch do
   def up do
     create table("matches") do
       add(:duration, :integer, null: false)
-      add(:match_id, :integer, null: false)
-      add(:match_seq_num, :integer, null: false)
+      add(:match_id, :bigint, null: false)
+      add(:match_seq_num, :bigint, null: false)
       add(:radiant_win, :boolean, null: false)
       add(:start_time, :utc_datetime, null: false)
 

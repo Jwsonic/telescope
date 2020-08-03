@@ -23,7 +23,11 @@ defmodule Telescope.Matches.Datastore do
   @spec write_match_seq_num(match_seq_num :: non_neg_integer()) ::
           {:ok, SeqNum.t()} | {:error, Ecto.Changeset.t()}
   def write_match_seq_num(match_seq_num) do
-    get_match_seq_num() |> max(match_seq_num) |> SeqNum.changeset() |> Repo.insert_or_update()
+    SeqNum
+    |> limit(1)
+    |> Repo.one()
+    |> SeqNum.changeset(%{match_seq_num: match_seq_num})
+    |> Repo.insert_or_update()
   end
 
   @doc """

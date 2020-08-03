@@ -15,7 +15,8 @@ defmodule Telescope.Application do
       {Finch, name: FinchHttp},
       Telescope.Repo,
       Telescope.Heroes,
-      Telescope.ProPlayers
+      Telescope.ProPlayers,
+      Telescope.Valve.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

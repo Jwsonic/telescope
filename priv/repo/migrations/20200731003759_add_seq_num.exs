@@ -3,7 +3,7 @@ defmodule Telescope.Repo.Migrations.AddSeqNum do
 
   def up do
     create table("seq_num") do
-      add(:match_seq_num, :integer, null: false)
+      add(:match_seq_num, :bigint, null: false)
 
       timestamps()
     end
