@@ -11,17 +11,22 @@ defmodule Telescope.Application do
     :inets.start()
     :ssl.start()
 
-    children = [
-      {Finch, name: FinchHttp},
-      Telescope.Repo,
-      Telescope.Heroes,
-      Telescope.ProPlayers,
-      Telescope.Valve.Supervisor
-    ]
+    children =
+      [
+        {Finch, name: FinchHttp},
+        Telescope.Repo
+      ]
+      |> env_children(Mix.env())
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Telescope.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp env_children(children, :test), do: children
+
+  defp env_children(children, _env) do
+    children ++ [Telescope.Heroes, Telescope.ProPlayers, Telescope.Valve.Supervisor]
   end
 end

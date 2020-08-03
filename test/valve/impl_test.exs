@@ -4,8 +4,6 @@ defmodule Telescope.Valve.ImplTest do
   alias Telescope.Config
   alias Telescope.Valve.Impl
 
-  import Telescope.Factory
-
   setup do
     bypass = Bypass.open()
 
