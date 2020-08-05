@@ -1,34 +1,44 @@
 defmodule Telescope.Heroes do
-  use Agent
-
   require Logger
 
-  def start_link(_args) do
-    Agent.start_link(&fetch_heroes/0, name: __MODULE__)
+  @key __MODULE__
+  @hero_file "heroes.json"
+
+  @spec name(id :: integer()) :: String.t()
+  def name(id) when is_integer(id) do
+    @key
+    |> :persistent_term.get()
+    |> Map.get(id, "Unknown")
   end
 
-  @spec get_name(id :: non_neg_integer()) :: String.t()
-  def get_name(id) do
-    __MODULE__
-    |> Agent.get(& &1)
-    |> Map.get(id, %{})
-    |> Map.get("localized_name", "Unknown")
+  @spec load() :: :ok
+  def load do
+    :persistent_term.erase(@key)
+
+    read_heroes!()
+    |> Enum.reduce(%{}, &transform/2)
+    |> persist()
   end
 
-  defp fetch_heroes do
-    with {:ok, {{_http_version, 200, _reason}, _headers, body}} <-
-           :httpc.request('https://api.opendota.com/api/heroes'),
-         body <- to_string(body),
-         {:ok, heroes} <- Jason.decode(body) do
-      Logger.info("Got #{length(heroes)} heroes.")
+  defp read_heroes! do
+    :telescope
+    |> :code.priv_dir()
+    |> Path.join(@hero_file)
+    |> File.read!()
+    |> Jason.decode!()
+  end
 
-      Enum.reduce(heroes, %{}, fn hero, acc ->
-        key = Map.get(hero, "id", "no_id")
+  defp transform(%{"id" => id, "localized_name" => name}, acc) do
+    Map.put(acc, id, name)
+  end
 
-        Map.put(acc, key, hero)
-      end)
-    else
-      _ -> %{}
-    end
+  defp transform(hero, acc) do
+    Logger.error("Invalid hero: #{inspect(hero)}")
+
+    acc
+  end
+
+  defp persist(heroes) do
+    :persistent_term.put(@key, heroes)
   end
 end
