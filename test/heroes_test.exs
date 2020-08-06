@@ -3,10 +3,6 @@ defmodule Telescope.HeroesTest do
 
   alias Telescope.Heroes
 
-  setup do
-    :ok = Heroes.load()
-  end
-
   describe "Heroes.name/1" do
     test "Returns the hero name if there is one" do
       :telescope
