@@ -26,6 +26,6 @@ defmodule Telescope.Application do
   defp env_children(children, :test), do: children
 
   defp env_children(children, _env) do
-    children ++ [Telescope.ProPlayers, Telescope.Valve.Supervisor]
+    children ++ [Telescope.Valve.Supervisor]
   end
 end

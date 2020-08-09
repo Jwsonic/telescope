@@ -1,25 +1,52 @@
 defmodule Telescope.Matches.DatastoreTest do
   use Telescope.DataCase
 
-  alias Telescope.Matches.{Datastore, Match, SeqNum}
+  alias Telescope.Matches.{Datastore, Match, MatchPlayer, SeqNum}
   alias Telescope.Repo
 
   import Telescope.Factory
+  import Telescope.Fixtures
 
   describe "Datastore.write_match/1" do
-    test "it persists a valid match" do
-      {:ok, match} =
-        %{
-          "duration" => 600,
-          "match_id" => 1,
-          "match_seq_num" => 1,
-          "radiant_win" => true,
-          "start_time" => DateTime.utc_now() |> DateTime.to_iso8601()
-        }
-        |> Match.parse()
-        |> Datastore.write_match()
+    test "it persists a matches with pro players" do
+      Enum.each([match1(), match3()], fn fixture ->
+        {:ok, match} =
+          fixture
+          |> Match.parse()
+          |> Datastore.write_match()
 
-      assert match == Repo.one!(Match)
+        assert match ==
+                 Match
+                 |> Ecto.Query.preload([:radiant_players, :dire_players])
+                 |> Repo.get!(match.id)
+      end)
+    end
+
+    test "it does not persist a match with no pro players" do
+      assert {:error,
+              %Ecto.Changeset{
+                data: %Match{},
+                valid?: false
+              }} =
+               match2()
+               |> Match.parse()
+               |> Datastore.write_match()
+    end
+
+    test "it persists pro match players" do
+      assert {:ok, %Match{radiant_players: [kuro]}} =
+               match1()
+               |> Match.parse()
+               |> Datastore.write_match()
+
+      assert kuro == Repo.get_by!(MatchPlayer, name: "KuroKy")
+
+      assert {:ok, %Match{dire_players: [jerax]}} =
+               match3()
+               |> Match.parse()
+               |> Datastore.write_match()
+
+      assert jerax == Repo.get_by!(MatchPlayer, name: "JerAx")
     end
   end
 

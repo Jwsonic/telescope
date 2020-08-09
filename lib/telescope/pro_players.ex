@@ -4,6 +4,18 @@ defmodule Telescope.ProPlayers do
   @key __MODULE__
   @hero_file "pro_players.json"
 
+  @type player :: String.t()
+  @opaque cache :: %{required(integer()) => player()}
+
+  @spec all() :: cache()
+  def all do
+    :persistent_term.get(@key, %{})
+  end
+
+  @spec is_pro_player?(players :: cache(), account_id :: integer()) :: Macro.t()
+  defguard is_pro_player?(players, account_id)
+           when is_map(players) and is_integer(account_id) and is_map_key(players, account_id)
+
   @spec name(id :: integer()) :: String.t()
   def name(id) when is_integer(id) do
     @key
