@@ -1,4 +1,7 @@
 defmodule Telescope.Matches do
+  @moduledoc """
+  Match domain API.
+  """
   alias Ecto.Changeset
   alias Telescope.Matches.{Datastore, Match}
 
@@ -12,6 +15,11 @@ defmodule Telescope.Matches do
     Datastore.get_match_seq_num()
   end
 
+  @doc """
+  Attempts to parse list of maps into `Telescope.Matches.Match`s. Successfully parsed
+  matches are presisted and broadcast as events. The largest match sequence number is also persisted,
+  regardless of if it's match is persisted.
+  """
   @spec process(matches :: list(map())) :: :ok
   def process(matches) when is_list(matches) do
     process_match_seq_num(matches)
@@ -40,10 +48,12 @@ defmodule Telescope.Matches do
 
   defp valid?(data), do: Map.get(data, :valid?, false)
 
+  # TODO: shift this elsewhere and implement it
   defp notable_players?(_data), do: false
 
   defp match_seq_num(data), do: Map.get(data, :match_seq_num, 0)
 
+  # TODO: Wire up pubsub
   defp announce_result({:ok, match}) do
     match
   end

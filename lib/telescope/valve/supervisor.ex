@@ -1,4 +1,7 @@
 defmodule Telescope.Valve.Supervisor do
+  @moduledoc """
+  A Supervisor for the `Telescope.Valve.MatchFetchServer`.
+  """
   use Supervisor
 
   alias Telescope.Valve.MatchFetchServer

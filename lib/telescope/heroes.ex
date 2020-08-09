@@ -1,9 +1,17 @@
 defmodule Telescope.Heroes do
+  @moduledoc """
+  Heroes domain API.
+  """
   require Logger
 
   @key __MODULE__
   @hero_file "heroes.json"
 
+  @doc """
+  Gets a hero name by id. Returns "Unknown" if there is no hero with the given id.
+
+  You must call `Telescope.Heroes.load/1` before using this method for the first time.
+  """
   @spec name(id :: integer()) :: String.t()
   def name(id) when is_integer(id) do
     @key
@@ -11,8 +19,11 @@ defmodule Telescope.Heroes do
     |> Map.get(id, "Unknown")
   end
 
-  @spec load() :: :ok
-  def load do
+  @doc """
+  Loads Hero information into memory.
+  """
+  @spec load!() :: :ok
+  def load! do
     :persistent_term.erase(@key)
 
     read_heroes!()

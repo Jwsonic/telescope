@@ -1,4 +1,7 @@
 defmodule Telescope.Matches.MatchPlayer do
+  @moduledoc """
+  Represents and player and the hero they played in a given Dota 2 match.
+  """
   use Ecto.Schema
 
   import Ecto.Changeset

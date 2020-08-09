@@ -1,4 +1,7 @@
 defmodule Telescope.Factory do
+  @moduledoc """
+  Factory provides ex_machina testing factories for the Telescope app.
+  """
   use ExMachina.Ecto, repo: Telescope.Repo
 
   alias Telescope.Matches.{Match, SeqNum}

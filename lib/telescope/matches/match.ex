@@ -1,4 +1,7 @@
 defmodule Telescope.Matches.Match do
+  @moduledoc """
+  Represents information about a Dota 2 match.
+  """
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -44,7 +47,7 @@ defmodule Telescope.Matches.Match do
   end
 
   def parse(_data) do
-    %Changeset{valid?: false}
+    %Changeset{data: %Match{}, valid?: false}
   end
 
   defp extract_players(%{"players" => players}) when is_list(players) do

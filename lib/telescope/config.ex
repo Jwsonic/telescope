@@ -1,4 +1,7 @@
 defmodule Telescope.Config do
+  @moduledoc """
+  Config sets up the global configureation for the Telescope app.
+  """
   use Skogsra
 
   def preload_all do

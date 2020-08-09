@@ -1,4 +1,7 @@
 defmodule Telescope.Valve.MatchFetchServer do
+  @moduledoc """
+  A GenServer that fetches Dota 2 match information on an interval.
+  """
   use GenServer
 
   alias Telescope.Valve.Impl

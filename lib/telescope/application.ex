@@ -7,8 +7,8 @@ defmodule Telescope.Application do
 
   def start(_type, _args) do
     Telescope.Config.preload_all()
-    Telescope.Heroes.load()
-    Telescope.ProPlayers.load()
+    Telescope.Heroes.load!()
+    Telescope.ProPlayers.load!()
 
     children =
       [

@@ -1,4 +1,8 @@
 defmodule Telescope.Fixtures do
+  @moduledoc """
+  Fixtures loads real match data from json files into maps
+  for use in tests.
+  """
   @fixture_path Path.join(__DIR__, "fixtures")
 
   @spec match1 :: map()
