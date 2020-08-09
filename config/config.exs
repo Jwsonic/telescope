@@ -3,11 +3,14 @@ import Config
 config :telescope,
   ecto_repos: [Telescope.Repo]
 
-config :telescope, Telescope.Repo,
-  database: "telescope",
-  username: "telescope",
-  password: "password",
-  hostname: "localhost",
-  port: "4001"
+# Configures the endpoint
+config :telescope, TelescopeWeb.Endpoint,
+  render_errors: [view: TelescopeWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Telescope.PubSub
 
-if Mix.env() == :test, do: import_config("test.exs")
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
+env = Mix.env()
+
+if env in [:dev, :test], do: import_config("#{env}.exs")

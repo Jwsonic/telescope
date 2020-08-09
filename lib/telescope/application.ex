@@ -13,7 +13,12 @@ defmodule Telescope.Application do
     children =
       [
         {Finch, name: FinchHttp},
-        Telescope.Repo
+        TelescopeWeb.Telemetry,
+        # Start the PubSub system
+        {Phoenix.PubSub, name: Telescope.PubSub},
+        # Start the Endpoint (http/https)
+        Telescope.Repo,
+        TelescopeWeb.Endpoint
       ]
       |> env_children(Mix.env())
 
@@ -21,6 +26,13 @@ defmodule Telescope.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Telescope.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  def config_change(changed, _new, removed) do
+    TelescopeWeb.Endpoint.config_change(changed, removed)
+    :ok
   end
 
   defp env_children(children, :test), do: children

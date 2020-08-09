@@ -9,14 +9,15 @@ defmodule Telescope.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
-      aliases: aliases()
+      aliases: aliases(),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers()
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :os_mon],
       mod: {Telescope.Application, []}
     ]
   end
@@ -29,6 +30,16 @@ defmodule Telescope.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:finch, "~> 0.3"},
       {:skogsra, "~> 2.2"},
+      {:phoenix, "~> 1.5.4"},
+      {:phoenix_ecto, "~> 4.1"},
+      {:phoenix_live_view, "~> 0.13.0"},
+      {:phoenix_html, "~> 2.11"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_dashboard, "~> 0.2"},
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"},
+      {:gettext, "~> 0.11"},
+      {:plug_cowboy, "~> 2.0"},
 
       # Test/Dev deps
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
@@ -37,7 +48,8 @@ defmodule Telescope.MixProject do
       {:bypass,
        git: "git@github.com:PSPDFKit-labs/bypass.git",
        ref: "8e4b4d82c593ec43da6ef6f74a046b19b249c6a5",
-       only: :test}
+       only: :test},
+      {:floki, ">= 0.0.0", only: :test}
     ]
   end
 
@@ -46,7 +58,9 @@ defmodule Telescope.MixProject do
 
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "ecto.setup": ["cmd docker-compose up -d", "ecto.create", "ecto.migrate"],
+      setup: ["deps.get", "ecto.setup", "cmd yarn install --cwd assets"],
       test: ["ecto.setup", "test"],
       "test.watch": ["ecto.setup", "test.watch"]
     ]
