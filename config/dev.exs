@@ -1,5 +1,11 @@
 import Config
 
+config :telescope, Telescope.Repo,
+  database: "telescope",
+  username: "telescope",
+  password: "password",
+  port: "4001"
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

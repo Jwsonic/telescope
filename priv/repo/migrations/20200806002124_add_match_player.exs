@@ -12,8 +12,8 @@ defmodule Telescope.Repo.Migrations.AddMatchPlayer do
       timestamps()
     end
 
-    create(unique_index("match_players", [:hero, :name], name: :player_hero))
-    create(unique_index("match_players", [:name, :match_id]))
+    create(unique_index("match_players", [:hero, :match_id], name: :match_hero))
+    create(unique_index("match_players", [:name, :match_id], name: :match_player))
   end
 
   def down do

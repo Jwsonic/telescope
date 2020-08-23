@@ -14,6 +14,9 @@ defmodule Telescope.Fixtures do
   @spec match3 :: map()
   def match3, do: load("match3.json")
 
+  @spec match4 :: map()
+  def match4, do: load("match4.json")
+
   defp load(filename) do
     @fixture_path
     |> Path.join(filename)

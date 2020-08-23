@@ -3,7 +3,7 @@ defmodule Telescope.Matches do
   Match domain API.
   """
   alias Ecto.Changeset
-  alias Telescope.Matches.{Datastore, Match}
+  alias Telescope.Matches.{Datastore, Events, Match}
 
   require Logger
 
@@ -29,6 +29,8 @@ defmodule Telescope.Matches do
     :ok
   end
 
+  def subscribe, do: Events.subscribe()
+
   defp process_matches(matches) do
     matches
     |> Enum.map(&Match.parse/1)
@@ -46,16 +48,19 @@ defmodule Telescope.Matches do
     |> Datastore.write_match_seq_num()
   end
 
-  defp valid?(data), do: Map.get(data, :valid?, false)
+  defp valid?(%Changeset{valid?: valid}), do: valid
 
-  # TODO: shift this elsewhere and implement it
-  defp notable_players?(_data), do: false
+  defp notable_players?(changeset) do
+    radiant_players = Changeset.get_field(changeset, :radiant_players, [])
+    dire_players = Changeset.get_field(changeset, :dire_players, [])
 
-  defp match_seq_num(data), do: Map.get(data, :match_seq_num, 0)
+    radiant_players != [] or dire_players != []
+  end
 
-  # TODO: Wire up pubsub
+  defp match_seq_num(data), do: Map.get(data, "match_seq_num", 0)
+
   defp announce_result({:ok, match}) do
-    match
+    Events.broadcast(match)
   end
 
   defp announce_result({:error, %Changeset{errors: errors} = changeset}) do

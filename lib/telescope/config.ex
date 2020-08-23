@@ -7,38 +7,38 @@ defmodule Telescope.Config do
   @envdoc """
   Postgres database name.
   """
-  app_env(:postgres_database, :telescope, [:database], default: "telescope")
+  app_env(:postgres_database, :telescope, [:database])
 
   @envdoc """
   Postgres user name
   """
-  app_env(:postgres_user, :telescope, [:username], default: "telescope")
+  app_env(:postgres_user, :telescope, [:username])
 
   @envdoc """
   Postgres password
   """
-  app_env(:postgres_password, :telescope, [:password], default: "password")
+  app_env(:postgres_password, :telescope, [:password])
 
   @envdoc """
   Postgres hostname
   """
-  app_env(:postgres_hostname, :telescope, [:hostname], default: "localhost")
+  app_env(:postgres_hostname, :telescope, [:hostname])
 
   @envdoc """
   Postgres port
   """
-  app_env(:postgres_port, :telescope, [:port], default: "4001")
+  app_env(:postgres_port, :telescope, [:port])
 
-  app_env(:http_host, :telescope, [:url, :host],
-    default: "localhost",
-    namespace: TelescopeWeb.Endpoint
-  )
+  app_env(:http_host, :telescope, [:url, :host], default: "localhost")
 
   @envdoc """
   HTTP server port
   """
   app_env(:http_port, :telescope, [:http, :port], default: 4000)
 
+  @envdoc """
+  Secret key for
+  """
   app_env(
     :secret_key_base,
     :telescope,

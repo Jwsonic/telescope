@@ -17,7 +17,7 @@ defmodule Telescope.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :os_mon],
+      extra_applications: extra_applications(Mix.env()),
       mod: {Telescope.Application, []}
     ]
   end
@@ -34,7 +34,6 @@ defmodule Telescope.MixProject do
       {:phoenix_ecto, "~> 4.1"},
       {:phoenix_live_view, "~> 0.13.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
@@ -42,6 +41,7 @@ defmodule Telescope.MixProject do
       {:plug_cowboy, "~> 2.0"},
 
       # Test/Dev deps
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.4", only: :test},
@@ -56,13 +56,15 @@ defmodule Telescope.MixProject do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_env), do: ["lib"]
 
+  defp extra_applications(:test), do: [:logger]
+  defp extra_applications(_env), do: [:logger, :os_mon]
+
   defp aliases do
     [
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "ecto.setup": ["cmd docker-compose up -d", "ecto.create", "ecto.migrate"],
       setup: ["deps.get", "ecto.setup", "cmd yarn install --cwd assets"],
-      test: ["ecto.setup", "test"],
-      "test.watch": ["ecto.setup", "test.watch"]
+      test: ["ecto.setup", "test"]
     ]
   end
 end

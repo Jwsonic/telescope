@@ -29,7 +29,7 @@ defmodule Telescope.Valve.ImplTest do
     test "it schedules a fetch" do
       Impl.init()
 
-      assert_receive :fetch, 2_000
+      assert_receive :fetch, 10_000
     end
   end
 
@@ -37,7 +37,7 @@ defmodule Telescope.Valve.ImplTest do
     test "it makes a call to the valve API" do
       Impl.fetch()
 
-      assert_receive :fetch, 2_000
+      assert_receive :fetch, 10_000
     end
   end
 end

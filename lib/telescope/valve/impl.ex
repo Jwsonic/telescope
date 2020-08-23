@@ -35,7 +35,7 @@ defmodule Telescope.Valve.Impl do
     Logger.error(error)
   end
 
-  @interval 1_000
+  @interval 2_000
 
   defp schedule_fetch do
     Process.send_after(self(), :fetch, @interval)

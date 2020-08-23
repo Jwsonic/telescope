@@ -2,6 +2,7 @@ defmodule Telescope.Matches.Datastore do
   @moduledoc """
   Datastore is responsible for presisting data in the Matches domain.
   """
+  require Logger
 
   alias Ecto.Changeset
   alias Telescope.Matches.{Match, SeqNum}
@@ -23,6 +24,8 @@ defmodule Telescope.Matches.Datastore do
   @spec write_match_seq_num(match_seq_num :: non_neg_integer()) ::
           {:ok, SeqNum.t()} | {:error, Ecto.Changeset.t()}
   def write_match_seq_num(match_seq_num) do
+    Logger.info("Writing #{match_seq_num}.")
+
     SeqNum
     |> limit(1)
     |> Repo.one()
