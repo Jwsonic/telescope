@@ -39,7 +39,7 @@ defmodule Telescope.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
-      {:g, path: "../gleam", manager: :rebar3, app: false},
+      {:gleam, path: "../gleam", manager: :rebar3, app: false},
 
       # Test/Dev deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},

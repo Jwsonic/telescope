@@ -1,3 +1,3 @@
 pub fn hello_world() -> String {
-  "Hello, from gleam!"
+  "Hello, from g3!"
 }

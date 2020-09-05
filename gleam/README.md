@@ -1,4 +1,4 @@
-# gleam
+# g
 
 A Gleam program
 
@@ -20,10 +20,10 @@ rebar3 shell
 ## Installation
 
 If [available in Hex](https://www.rebar3.org/docs/dependencies#section-declaring-dependencies)
-this package can be installed by adding `gleam` to your `rebar.config` dependencies:
+this package can be installed by adding `g` to your `rebar.config` dependencies:
 
 ```erlang
 {deps, [
-    gleam
+    g
 ]}.
 ```
