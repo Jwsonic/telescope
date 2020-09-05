@@ -15,6 +15,11 @@ defmodule Telescope.Matches do
     Datastore.get_match_seq_num()
   end
 
+  @spec get_matches() :: list(Match.t())
+  def get_matches do
+    Datastore.get_matches()
+  end
+
   @doc """
   Attempts to parse list of maps into `Telescope.Matches.Match`s. Successfully parsed
   matches are presisted and broadcast as events. The largest match sequence number is also persisted,

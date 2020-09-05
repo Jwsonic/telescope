@@ -44,4 +44,13 @@ defmodule Telescope.Matches.Datastore do
     |> Kernel.||(%{})
     |> Map.get(:match_seq_num, 4_595_976_092)
   end
+
+  @spec get_matches() :: list(Match.t())
+  def get_matches do
+    Match
+    |> order_by([m], m.start_time)
+    |> limit(20)
+    |> preload([:dire_players, :radiant_players])
+    |> Repo.all()
+  end
 end

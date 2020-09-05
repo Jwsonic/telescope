@@ -1,0 +1,12 @@
+<section class="row">
+  <article class="column">
+    <h2>Recent Matches</h2>
+    <ul>
+      <%= for match <- @matches do %>
+        <li>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.opendota.com/matches/<%= match.match_id %>"><%= match.match_id %></a>
+        </li>
+      <% end %>
+    </ul>
+  </article>
+</section>
