@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "elixir"
+		},
+		{
+			"path": "gleam"
+		}
+	],
+	"settings": {}
+}
