@@ -1,3 +1,7 @@
 // import all files to be exported here
+// import valve
+import valve/api_client
 
-import valve
+pub fn yo() -> String {
+  "yo"
+}
