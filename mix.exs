@@ -39,7 +39,7 @@ defmodule Telescope.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
-      {:gleam, path: "./gleam", app: false, compile: "rebar3 compile"},
+      {:g, path: "./gleam", manager: :rebar3},
 
       # Test/Dev deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -66,7 +66,7 @@ defmodule Telescope.MixProject do
       "ecto.setup": ["cmd docker-compose up -d", "ecto.create", "ecto.migrate"],
       format: ["format", "cmd gleam format gleam"],
       setup: ["deps.get", "ecto.setup", "cmd yarn install --cwd assets"],
-      test: ["ecto.setup", "test", "cmd (cd gleam && rebar3 eunit)"]
+      test: ["ecto.setup", "test", "cmd (cd gleam && ~/.mix/rebar3 eunit)"]
     ]
   end
 end
