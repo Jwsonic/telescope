@@ -9,8 +9,9 @@ defmodule Telescope.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
+      erlc_paths: ["src", "gen"],
       aliases: aliases(),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers()
+      compilers: [:gleam, :phoenix, :gettext] ++ Mix.compilers()
     ]
   end
 
@@ -39,7 +40,18 @@ defmodule Telescope.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
-      {:g, path: "./gleam", manager: :rebar3},
+
+      # Gleam deps
+      {:mix_gleam, "~> 0.1.0"},
+      {:gleam_stdlib, "~> 0.11.0"},
+      {:gleam_jsone, "~> 0.3.1"},
+      {:gleam_decode, "~> 1.5.1"},
+      {:gleam_http,
+       git: "git@github.com:Jwsonic/http.git",
+       ref: "7ca20ecb4006f5cda3bfb9dcd038fccebeb9d5ac",
+       override: true},
+      {:gleam_httpc,
+       git: "git@github.com:Jwsonic/httpc.git", ref: "199b6c54e01581e1382a75d502510911348eee4e"},
 
       # Test/Dev deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -66,7 +78,7 @@ defmodule Telescope.MixProject do
       "ecto.setup": ["cmd docker-compose up -d", "ecto.create", "ecto.migrate"],
       format: ["format", "cmd gleam format gleam"],
       setup: ["deps.get", "ecto.setup", "cmd yarn install --cwd assets"],
-      test: ["ecto.setup", "test", "cmd (cd gleam && ~/.mix/rebar3 eunit)"]
+      test: ["ecto.setup", "test"]
     ]
   end
 end

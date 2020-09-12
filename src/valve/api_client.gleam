@@ -1,7 +1,7 @@
 import decode.{Decoder, field, int, list, map2, map5, string}
 import gleam/dynamic.{Dynamic}
-import gleam/httpc
 import gleam/http.{Get, Https, Request}
+import gleam/httpc
 import gleam/jsone
 import gleam/option.{None, Some}
 import gleam/result
@@ -52,7 +52,6 @@ pub fn fetch(
   host: String,
   path: String,
   query: String,
-  api_key: String,
 ) -> Result(List(Match), String) {
   let response =
     Request(
